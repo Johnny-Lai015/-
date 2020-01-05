@@ -1,0 +1,100 @@
+package Software;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+
+public class GUI_Cancel extends JFrame {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JPanel contentPane;
+	private JTextField textField;
+	private JTextField textField_1;
+
+	/**
+	 * Launch the application.
+	 * 
+	 * 
+	 * 
+	 * Create the frame.
+	 * 
+	 * @return
+	 */
+	public GUI_Cancel() {
+		super("GUI");
+		setTitle("\u53D6\u6D88\u53D6\u6D88");
+		setVisible(true);
+
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JLabel lblYeah = new JLabel("YEAH~\u53D6\u6D88\u53D6\u6D88");
+		lblYeah.setFont(new Font("微軟正黑體", Font.BOLD | Font.ITALIC, 24));
+		lblYeah.setBounds(10, 10, 201, 33);
+		contentPane.add(lblYeah);
+
+		textField = new JTextField();
+		textField.setBounds(10, 91, 201, 33);
+		contentPane.add(textField);
+		textField.setColumns(10);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(10, 190, 201, 33);
+		contentPane.add(textField_1);
+
+		JLabel labelName = new JLabel("\u8A02\u623F\u5927\u540D");
+		labelName.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		labelName.setBounds(10, 53, 91, 28);
+		contentPane.add(labelName);
+
+		JButton btnCancel = new JButton("\u53D6\u6D88\u8A02\u623F");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				try {
+					ArrayList<String> box = new ArrayList<String>();
+					String name;
+					String checkInStart;
+					String checkInOver;
+					String roomNum;
+					name = textField.getText();
+					roomNum = textField_1.getText();
+					box = reservationCancel.FindData(name,roomNum);
+					System.out.println(box);
+					checkInStart = box.get(0);
+					checkInOver = box.get(1);
+					System.out.printf("%s %s %s", checkInStart, checkInOver, roomNum);
+					reservationCancel.reservate(roomNum, checkInStart, checkInOver);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				JOptionPane.showMessageDialog(btnCancel, "取消預約成功!!\n**請注意**\n取消預約即全部預約天數皆取消，\n如要預約部分天數，請重新預約");
+			}
+		});
+		
+		JLabel label = new JLabel("\u8A02\u623F\u623F\u865F");
+		label.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		label.setBounds(10, 149, 91, 28);
+		contentPane.add(label);
+		btnCancel.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		btnCancel.setBounds(244, 178, 136, 50);
+		contentPane.add(btnCancel);
+	}
+}
