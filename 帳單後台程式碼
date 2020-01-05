@@ -1,0 +1,66 @@
+package Software;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.text.ParseException;
+
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+public class Bill {
+	static String bill(String name, String roomNum) throws Exception {
+		File file = new File("testdata.xlsx");
+		FileInputStream fIP = new FileInputStream(file);
+		XSSFWorkbook workbook = new XSSFWorkbook(fIP);
+		XSSFSheet spreadsheet = workbook.getSheet("Sheet1");
+		boolean reservationAvailable = true;
+		String roomPrice = "";
+		File file2 = new File("room.xlsx");
+		FileInputStream fIP2 = new FileInputStream(file2);
+		XSSFWorkbook workbook2 = new XSSFWorkbook(fIP2);
+		XSSFSheet spreadsheet2 = workbook2.getSheet("room");
+		for (int i = 1; spreadsheet.getRow((short) i) != null; i++) {
+			reservationAvailable = true;
+			XSSFRow row = spreadsheet.getRow((short) i);
+			if (name.equals(row.getCell(0).toString())) {
+				if (roomNum.equals(row.getCell(6).toString())) {
+
+					System.out.println(roomNum);
+
+					for (int j = 1; j <= 30; j++) {
+						XSSFRow row2 = spreadsheet2.getRow((short) j);
+						if (roomNum.equals(row2.getCell(0).toString())) {
+							roomPrice = row2.getCell(4).toString();
+							break;
+						}
+					}
+					String[] tmp = roomPrice.split("");
+					roomPrice = "";
+					for (int p = 0; p < 4; p++) {
+						roomPrice += tmp[p];
+					}
+
+					int intRoomPrice = (int) (Date(row.getCell(4).toString(), row.getCell(5).toString())
+							* Integer.parseInt(roomPrice));
+					roomPrice = Integer.toString(intRoomPrice);
+				}
+
+			}
+		}
+		if (reservationAvailable == true) {
+			return roomPrice;
+		} else {
+			return roomPrice;
+		}
+	}
+
+	static long Date(String start, String end) throws ParseException {
+		java.text.SimpleDateFormat df = new java.text.SimpleDateFormat("yyyy/MM/dd");
+		long d1 = df.parse(start).getTime();
+		long d2 = df.parse(end).getTime();
+		long dif = (d2 - d1) / (1000 * 60 * 60 * 24);
+		return dif;
+	}
+
+}
