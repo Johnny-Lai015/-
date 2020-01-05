@@ -1,0 +1,296 @@
+package Software;
+
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.ButtonGroup;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import javax.swing.JTextField;
+import javax.swing.JRadioButton;
+import javax.swing.JButton;
+import javax.swing.AbstractAction;
+
+import Software.hotelExcel;
+import javax.swing.JCheckBox;
+
+public class GUI_reservation extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField txtCheckInDate;
+	private JTextField txtCheckOutDate;
+	private JTextField txtName;
+	private JTextField txtTel;
+	private JTextField txtAddress;
+	private JTextField txtCreditCard;
+	String RoomType, RoomSmoke, RoomPeople;
+
+	/**
+	 * Launch the application.
+	 */
+
+	/**
+	 * Create the frame.
+	 */
+	public GUI_reservation() {
+		super();
+		setTitle("Reservation");
+		setVisible(true);
+
+		setBounds(100, 100, 500, 520);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+
+		JLabel Label = new JLabel("\u65C5\u9928\u8A02\u623F\u7CFB\u7D71");
+		Label.setFont(new Font("微軟正黑體", Font.BOLD, 30));
+		Label.setBounds(10, 10, 188, 31);
+		contentPane.add(Label);
+
+		JLabel labelCheckIn = new JLabel("\u5165\u4F4F\u65E5\u671F");
+		labelCheckIn.setFont(new Font("微軟正黑體", Font.BOLD, 20));
+		labelCheckIn.setBounds(10, 51, 101, 20);
+		contentPane.add(labelCheckIn);
+
+		txtCheckInDate = new JTextField();
+		txtCheckInDate.setBounds(10, 81, 188, 20);
+		contentPane.add(txtCheckInDate);
+		txtCheckInDate.setColumns(10);
+
+		JLabel labelCheckInDateForm = new JLabel("YYYY/MM/DD");
+		labelCheckInDateForm.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
+		labelCheckInDateForm.setBounds(95, 56, 103, 15);
+		contentPane.add(labelCheckInDateForm);
+
+		JLabel labelCheckOut = new JLabel("\u9000\u623F\u65E5\u671F");
+		labelCheckOut.setFont(new Font("微軟正黑體", Font.BOLD, 20));
+		labelCheckOut.setBounds(245, 51, 101, 20);
+		contentPane.add(labelCheckOut);
+
+		JLabel labelCheckOutDateForm = new JLabel("YYYY/MM/DD");
+		labelCheckOutDateForm.setFont(new Font("微軟正黑體", Font.PLAIN, 14));
+		labelCheckOutDateForm.setBounds(331, 56, 103, 15);
+		contentPane.add(labelCheckOutDateForm);
+
+		txtCheckOutDate = new JTextField();
+		txtCheckOutDate.setColumns(10);
+		txtCheckOutDate.setBounds(245, 81, 188, 20);
+		contentPane.add(txtCheckOutDate);
+
+		JLabel labelInfo = new JLabel("\u8A02\u623F\u8CC7\u6599");
+		labelInfo.setFont(new Font("微軟正黑體", Font.BOLD, 20));
+		labelInfo.setBounds(10, 271, 88, 20);
+		contentPane.add(labelInfo);
+
+		JLabel labelInfoName = new JLabel("\u59D3\u540D");
+		labelInfoName.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		labelInfoName.setBounds(10, 301, 55, 20);
+		contentPane.add(labelInfoName);
+
+		JLabel labelRoom = new JLabel("\u9078\u64C7\u623F\u578B");
+		labelRoom.setFont(new Font("微軟正黑體", Font.BOLD, 20));
+		labelRoom.setBounds(10, 111, 88, 20);
+		contentPane.add(labelRoom);
+
+		JRadioButton rdbSingle = new JRadioButton("\u55AE\u7368\u623F");
+		rdbSingle.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		rdbSingle.setBounds(10, 137, 105, 23);
+		contentPane.add(rdbSingle);
+
+		JRadioButton rdbSuite = new JRadioButton("\u5957\u623F");
+		rdbSuite.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		rdbSuite.setBounds(135, 137, 105, 23);
+		contentPane.add(rdbSuite);
+
+		JCheckBox chckbxNewCheckBox = new JCheckBox("\u623F\u9593\u9762\u6D77");
+		chckbxNewCheckBox.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		chckbxNewCheckBox.setBounds(260, 137, 120, 23);
+		contentPane.add(chckbxNewCheckBox);
+
+		txtName = new JTextField();
+		txtName.setColumns(10);
+		txtName.setBounds(75, 301, 369, 20);
+		contentPane.add(txtName);
+
+		JLabel labelInfoTel = new JLabel("\u96FB\u8A71");
+		labelInfoTel.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		labelInfoTel.setBounds(10, 331, 55, 20);
+		contentPane.add(labelInfoTel);
+
+		txtTel = new JTextField();
+		txtTel.setColumns(10);
+		txtTel.setBounds(75, 331, 369, 20);
+		contentPane.add(txtTel);
+
+		JLabel labelInfoAddress = new JLabel("\u5730\u5740");
+		labelInfoAddress.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		labelInfoAddress.setBounds(10, 361, 55, 20);
+		contentPane.add(labelInfoAddress);
+
+		txtAddress = new JTextField();
+		txtAddress.setColumns(10);
+		txtAddress.setBounds(75, 361, 369, 20);
+		contentPane.add(txtAddress);
+
+		JRadioButton rdbSmoke = new JRadioButton("\u5438\u83F8");
+		rdbSmoke.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		rdbSmoke.setBounds(10, 162, 105, 23);
+		contentPane.add(rdbSmoke);
+
+		JRadioButton rdbNotSmoke = new JRadioButton("\u975E\u5438\u83F8");
+		rdbNotSmoke.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		rdbNotSmoke.setBounds(135, 162, 105, 23);
+		contentPane.add(rdbNotSmoke);
+
+		JRadioButton rdb2People = new JRadioButton("\u96D9\u4EBA\u623F");
+		rdb2People.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		rdb2People.setBounds(10, 187, 105, 23);
+		contentPane.add(rdb2People);
+
+		JRadioButton rdb4People = new JRadioButton("\u56DB\u4EBA\u623F");
+		rdb4People.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		rdb4People.setBounds(135, 187, 105, 23);
+		contentPane.add(rdb4People);
+
+		JRadioButton rdb6People = new JRadioButton("\u516D\u4EBA\u623F");
+		rdb6People.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		rdb6People.setBounds(245, 187, 105, 23);
+		contentPane.add(rdb6People);
+
+		JLabel label = new JLabel("\u4FE1\u7528\u5361");
+		label.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		label.setBounds(10, 391, 65, 20);
+		contentPane.add(label);
+
+		txtCreditCard = new JTextField();
+		txtCreditCard.setColumns(10);
+		txtCreditCard.setBounds(75, 391, 369, 20);
+		contentPane.add(txtCreditCard);
+
+		JButton buttonGo = new JButton("\u6211\u8981\u8A02\u623F");
+		buttonGo.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		buttonGo.setBounds(318, 421, 126, 41);
+		contentPane.add(buttonGo);
+
+		JButton buttonCheck = new JButton("\u78BA\u8A8D\u6709\u7121\u7A7A\u623F");
+		buttonCheck.setFont(new Font("微軟正黑體", Font.PLAIN, 20));
+		buttonCheck.setBounds(10, 216, 166, 31);
+		contentPane.add(buttonCheck);
+
+		ButtonGroup radFunction = new ButtonGroup();
+		radFunction.add(rdbSingle);
+		radFunction.add(rdbSuite);
+
+		ButtonGroup radFunction1 = new ButtonGroup();
+		radFunction1.add(rdbSmoke);
+		radFunction1.add(rdbNotSmoke);
+
+		ButtonGroup radFunction2 = new ButtonGroup();
+		radFunction2.add(rdb2People);
+		radFunction2.add(rdb4People);
+		radFunction2.add(rdb6People);
+
+		// add
+		ArrayList<String> data = new ArrayList<String>();
+		buttonCheck.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				data.clear();
+				rdb2People.setActionCommand("雙人房");
+				rdb4People.setActionCommand("四人房");
+				rdb6People.setActionCommand("六人房");
+				rdbSmoke.setActionCommand("吸菸");
+				rdbNotSmoke.setActionCommand("非吸菸");
+				rdbSingle.setActionCommand("單獨房");
+				rdbSuite.setActionCommand("套房");
+
+				if (radFunction.getSelection() != null) {
+					if (radFunction1.getSelection() != null) {
+						if (radFunction2.getSelection() != null) {
+							try {
+								String roomCheckData;
+								if (chckbxNewCheckBox.isSelected()) {
+									roomCheckData = roomFile.roomReservation(
+											radFunction.getSelection().getActionCommand(), "靠海",
+											radFunction1.getSelection().getActionCommand(),
+											radFunction2.getSelection().getActionCommand(), txtCheckInDate.getText(),
+											txtCheckOutDate.getText());
+								} else {
+									roomCheckData = roomFile.roomReservation(
+											radFunction.getSelection().getActionCommand(), "不靠海",
+											radFunction1.getSelection().getActionCommand(),
+											radFunction2.getSelection().getActionCommand(), txtCheckInDate.getText(),
+											txtCheckOutDate.getText());
+								}
+								data.add(roomCheckData);
+								RoomType = radFunction.getSelection().getActionCommand();
+								RoomSmoke = radFunction1.getSelection().getActionCommand();
+								RoomPeople = radFunction2.getSelection().getActionCommand();
+								String roomCheck = roomCheckData.substring(0, 4);
+								if (roomCheck.equals("true")) {
+									JOptionPane.showMessageDialog(Label, "有空房喔喔喔");
+								} else {
+									JOptionPane.showMessageDialog(Label, "沒房囉哭哭哭");
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+			}
+		});
+		//
+
+		buttonGo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String name = txtName.getText();
+				String Tel = txtTel.getText();
+				String Address = txtAddress.getText();
+				String CreditCard = txtCreditCard.getText();
+				String DateIn = txtCheckInDate.getText();
+				String DateOut = txtCheckOutDate.getText();
+				String RoomNum = "";
+				System.out.println(data.get(0));
+				RoomNum += data.get(0).charAt(4);
+				if (RoomType.equals("套房")) {
+					RoomNum += data.get(0).charAt(5);
+				}
+				try {
+					new hotelExcel(name, Tel, Address, CreditCard, DateIn, DateOut,
+							RoomNum);
+					if (RoomType.equals("套房")) {
+						reservation.reservate(data.get(0).substring(4, 5), data.get(0).substring(5, 6), DateIn,
+								DateOut);
+					} else {
+						reservation.reservate(data.get(0).substring(4, 5), "0", DateIn, DateOut);
+					}
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				JOptionPane.showMessageDialog(buttonGo, "訂房成功\n入住日期: " + DateIn + "\n退房日期: " + DateOut +"\n房號: " + RoomNum +  "\n房型: "
+						+ RoomType + "\n          " + RoomSmoke + "\n	          " + RoomPeople);
+			}
+		});
+
+	}
+
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, "SwingAction");
+			putValue(SHORT_DESCRIPTION, "Some short description");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+		}
+	}
