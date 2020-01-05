@@ -1,0 +1,72 @@
+package Software;
+
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+
+import java.util.ArrayList;
+
+public class hotelExcel {
+
+	private static Workbook wb;
+	private static Sheet sh;
+	private static FileInputStream fis;
+	private static FileOutputStream fos;
+	private static Cell cell;
+	private static Row row;
+	
+	public hotelExcel(String name, String Tel, String Address, String CreditCard, String DateIn, String DateOut,String RoomNum) throws Exception {
+		int i = 0;
+		ArrayList<String> box = new ArrayList<String>();//用來放基本資料
+		box.add(name);
+		box.add("A"+Tel);
+		box.add(Address);
+		box.add(CreditCard);
+		box.add(DateIn);
+		box.add(DateOut);
+		box.add(RoomNum);
+
+		fis = new FileInputStream("./testdata.xlsx");
+		wb = WorkbookFactory.create(fis);
+		sh = wb.getSheet("sheet1");
+
+		row = sh.getRow(i);//佔存行數的資料
+		while (row != null) {//判斷是否為空行 是則計數器+1
+			i++;
+			row = sh.getRow(i);
+			System.out.println(i);
+		}
+		row = sh.createRow(i);//確定是空行後開始建立
+		
+		for (int j = 0; j < 7; j++) {
+
+			try {
+				// 尋找空列
+				cell = sh.getRow(i).getCell(j);
+				cell.equals(null);
+			}
+			// 空列則新增一空白並添加資料
+			catch (java.lang.NullPointerException e) {
+				cell = sh.getRow(i).getCell(j, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+				cell.setCellValue(box.get(j));
+			}
+			// 其他則添加資料
+			catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+
+		fos = new FileOutputStream("./testdata.xlsx");// 開檔
+		wb.write(fos);// 寫入檔案
+		fos.flush();
+		fos.close();
+
+	}
+
+}
