@@ -1,0 +1,120 @@
+package Software;
+
+import java.io.*;
+import java.util.*;
+
+import org.apache.poi.xssf.usermodel.*;
+
+public class roomFile {
+	static String roomReservation(String roomType, String scene, String smoke, String people, String checkInStart,
+			String checkInOver) throws Exception {
+		File file = new File("room.xlsx");
+		FileInputStream fIP = new FileInputStream(file);
+		XSSFWorkbook workbook = new XSSFWorkbook(fIP);
+		XSSFSheet spreadsheet = workbook.getSheet("room");
+		boolean reservationAvailable = true;
+		String finalData = "";
+		System.out.println(checkInStart);
+		for (int i = 1; i <= 30; i++) {
+			reservationAvailable = true;
+			XSSFRow row = spreadsheet.getRow((short) i);
+			XSSFRow row3 = spreadsheet.getRow((short) i + 1);
+			System.out.println(scene + row.getCell(1).toString());
+			if (scene.equals(row.getCell(1).toString())) {
+				if (smoke.equals(row.getCell(2).toString())) {
+					if (people.equals(row.getCell(3).toString())) {
+						XSSFSheet roomCheckSheet = workbook.getSheet(row.getCell(0).toString());
+						int yearStart = Integer.parseInt(checkInStart.substring(3, 4)),
+								yearOver = Integer.parseInt(checkInOver.substring(3, 4)),
+								monthStart = Integer.parseInt(checkInStart.substring(5, 7)),
+								monthOver = Integer.parseInt(checkInOver.substring(5, 7)),
+								dateStart = Integer.parseInt(checkInStart.substring(8, 10)),
+								dateOver = Integer.parseInt(checkInOver.substring(8, 10));
+						XSSFRow row2;
+						row2 = roomCheckSheet.getRow(yearOver * 12 + monthOver - 1);
+						while (yearStart != yearOver || monthStart != monthOver || dateStart != dateOver) {
+							row2 = roomCheckSheet.getRow(yearStart * 12 + monthStart - 1);
+							if (row2.getCell(dateStart - 1).toString().equals("X")) {
+								dateStart = 1;
+								monthStart += 1;
+							}
+							if (monthStart > 12) {
+								monthStart = 1;
+								yearStart += 1;
+							}
+							row2 = roomCheckSheet.getRow(yearStart * 12 + monthStart - 1);
+							System.out.printf("%d %d %d %s\n", yearStart, monthStart, dateStart,
+									row2.getCell(dateStart - 1).toString());
+							if (row2.getCell(dateStart - 1).toString().equals("空房")) {
+								row2.getCell(dateStart - 1).setCellValue("預約");
+							} else {
+								reservationAvailable = false;
+								break;
+							}
+							dateStart += 1;
+						}
+						if (reservationAvailable == true && roomType.equals("套房")) {
+							yearStart = Integer.parseInt(checkInStart.substring(3, 4));
+							yearOver = Integer.parseInt(checkInOver.substring(3, 4));
+							monthStart = Integer.parseInt(checkInStart.substring(5, 7));
+							monthOver = Integer.parseInt(checkInOver.substring(5, 7));
+							dateStart = Integer.parseInt(checkInStart.substring(8, 10));
+							dateOver = Integer.parseInt(checkInOver.substring(8, 10));
+							if (scene.equals(row3.getCell(1).toString())) {
+								if (smoke.equals(row3.getCell(2).toString())) {
+									if (people.equals(row3.getCell(3).toString())) {
+										XSSFSheet roomCheckSheet3 = workbook.getSheet(row3.getCell(0).toString());
+										System.out.println(row3.getCell(0).toString());
+										XSSFRow row4;
+										row4 = roomCheckSheet3.getRow(yearOver * 12 + monthOver - 1);
+										while (yearStart != yearOver || monthStart != monthOver
+												|| dateStart != dateOver) {
+											row4 = roomCheckSheet3.getRow(yearStart * 12 + monthStart - 1);
+											if (row4.getCell(dateStart - 1).toString().equals("X")) {
+												dateStart = 1;
+												monthStart += 1;
+											}
+											if (monthStart > 12) {
+												monthStart = 1;
+												yearStart += 1;
+											}
+											row4 = roomCheckSheet3.getRow(yearStart * 12 + monthStart - 1);
+											System.out.printf("%d %d %d", yearStart, monthStart, dateStart);
+											if (row4.getCell(dateStart - 1).toString().equals("空房")) {
+												row4.getCell(dateStart - 1).setCellValue("預約");
+											} else {
+												reservationAvailable = false;
+												break;
+											}
+											dateStart += 1;
+										}
+									} else
+										reservationAvailable = false;
+								} else
+									reservationAvailable = false;
+							} else
+								reservationAvailable = false;
+						}
+						if (reservationAvailable == true && roomType.equals("套房")) {
+							finalData = "true" + row.getCell(0).toString() + row3.getCell(0).toString();
+							break;
+						} else if (reservationAvailable == true) {
+							finalData = "true" + row.getCell(0).toString();
+							break;
+						}
+					} else
+						reservationAvailable = false;
+				} else
+					reservationAvailable = false;
+			} else
+				reservationAvailable = false;
+		}
+
+		if (reservationAvailable == true) {
+			return finalData;
+		} else {
+			finalData = "fail";
+			return finalData;
+		}
+	}
+}
